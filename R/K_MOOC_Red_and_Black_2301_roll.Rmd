@@ -28,8 +28,8 @@ class(class_roll$id) <- "character"
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$name) %>%
-#  class_roll[., c("id", "name", "group")] %>%
-  class_roll[., c("id", "group")] %>%
+  class_roll[., c("id", "name", "group")] %>%
+#  class_roll[., c("id", "group")] %>%
   pander(caption = "가나다순", row.names = FALSE)
 ```
 
@@ -38,10 +38,10 @@ class_roll %$%
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$group, .$name) %>%
-#  class_roll[., c("group", "id", "name")] %>%
-  class_roll[., c("group", "id")] %>%
-#  subset(.$group == "Red", select = c("id", "name")) %>%
-  subset(.$group == "Red", select = c("id")) %>%
+  class_roll[., c("group", "id", "name")] %>%
+#  class_roll[., c("group", "id")] %>%
+  subset(.$group == "Red", select = c("id", "name")) %>%
+#  subset(.$group == "Red", select = c("id")) %>%
   pander(caption = "Red", row.names = FALSE)
 ```
 
@@ -50,10 +50,10 @@ class_roll %$%
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$group, .$name) %>%
-#  class_roll[., c("group", "id", "name")] %>%
-  class_roll[., c("group", "id")] %>%
-#  subset(.$group == "Black", select = c("id", "name")) %>%
-  subset(.$group == "Black", select = c("id")) %>%
+  class_roll[., c("group", "id", "name")] %>%
+#  class_roll[., c("group", "id")] %>%
+  subset(.$group == "Black", select = c("id", "name")) %>%
+#  subset(.$group == "Black", select = c("id")) %>%
   pander(caption = "Black", row.names = FALSE)
 ```
 

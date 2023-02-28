@@ -1,0 +1,116 @@
+---
+title: "Randomization Report : K-MOOC 230225"
+# author: "coop711"
+# date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(readxl)
+library(pander)
+library(knitr)
+library(magrittr)
+panderOptions('table.split.table', Inf)
+```
+
+<!--## Data
+
+```{r, data, echo = FALSE, results = 'asis'}
+load("./K_MOOC_red_and_black_optimum_data_202301.RData")
+```
+-->
+
+## 랜덤화 효과
+
+```{r, echo = FALSE, results = 'hide'}
+set.seed(Xmin)
+N <- nrow(class_roll) 
+class_roll$group <- 
+  sample(1:N) %%
+  2 %>%
+  factor(levels = c(0, 1), labels = c("Red", "Black"))
+red_and_black(Xmin)
+```
+
+### id 홀짝
+
+```{r, echo = FALSE}
+tbl2 <- class_roll$id %>%
+  as.numeric %>%
+  `%%`(2) %>%
+  factor(levels = c(1, 0), labels = c("홀", "짝")) %>%
+  table(class_roll$group, .) 
+tbl2 %>%
+  pander
+X2min <- tbl2 %>%
+  chisq.test(simulate.p.value = TRUE) %>%
+  pander
+```
+
+### 출생 시기 
+
+```{r, echo = FALSE}
+tbl3 <- class_roll$yob %>%
+    cut(breaks = c(-Inf, 1980, 1995, Inf), 
+        labels =c ("X세대", "Y세대", "Z세대" )) %>%
+    table(class_roll$group, .) 
+tbl3 %>%
+  pander
+X3min <- tbl3 %>%
+  chisq.test(simulate.p.value = TRUE) %>%
+  pander
+```
+
+### email 서비스
+
+```{r, echo = FALSE}
+isp <- class_roll$email %>%
+    strsplit("@", fixed = TRUE) %>%
+    sapply("[", 2) %>%
+    strsplit("[.]", fixed = FALSE) %>%
+    sapply("[", 1)
+tbl4 <- isp %>%
+    `%in%`(c("naver", "gmail")) %>%
+    `!` %>%
+    ifelse("기타서비스", isp) %>%
+    factor(levels = c("naver", "gmail", "기타서비스"),
+           labels = c("네이버", "구글", "기타서비스")) %>%
+    table(class_roll$group, .) 
+tbl4 %>%
+  pander
+X4min <- tbl4 %>%
+    chisq.test(simulate.p.value = TRUE) %>%
+    pander
+```
+
+<!--
+### 성별
+
+```{r, echo = FALSE}
+tbl5 <- class_roll$gender %>%
+    table(class_roll$group, .) 
+tbl5 %>%
+  pander
+X5min <- tbl5 %>%
+  chisq.test(simulate.p.value = TRUE) %>%
+  pander
+```
+-->
+
+### 성씨 분포
+
+```{r, echo = FALSE}
+f_name <- class_roll$name %>%
+  substring(first = 1, last = 1) 
+tbl6 <- f_name %>%
+  `%in%`(c("김", "이")) %>%
+  ifelse(f_name, "기타") %>%
+  factor(levels = c("김", "이", "기타")) %>%
+  table(class_roll$group, .) 
+tbl6 %>%
+  pander
+X6min <- tbl6 %>%
+  chisq.test(simulate.p.value = TRUE) %>%
+  pander
+```
