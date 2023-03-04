@@ -14,7 +14,7 @@ library(magrittr)
 panderOptions('table.split.table', Inf)
 ```
 
-<!--
+
 ### Data
 
 ```{r, data, echo = FALSE}
@@ -23,12 +23,12 @@ class(class_roll$id) <- "character"
 ```
 
 ### 전체 출석부
--->
+
 
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$name) %>%
-  class_roll[., c("id", "name", "group")] %>%
+  class_roll[., c("id", "user_name", "group")] %>%
 #  class_roll[., c("id", "group")] %>%
   pander(caption = "가나다순", row.names = FALSE)
 ```
@@ -38,9 +38,9 @@ class_roll %$%
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$group, .$name) %>%
-  class_roll[., c("group", "id", "name")] %>%
+  class_roll[., c("group", "id", "user_name")] %>%
 #  class_roll[., c("group", "id")] %>%
-  subset(.$group == "Red", select = c("id", "name")) %>%
+  subset(.$group == "Red", select = c("id", "user_name")) %>%
 #  subset(.$group == "Red", select = c("id")) %>%
   pander(caption = "Red", row.names = FALSE)
 ```
@@ -50,9 +50,9 @@ class_roll %$%
 ```{r, echo = FALSE}
 class_roll %$%
   order(.$group, .$name) %>%
-  class_roll[., c("group", "id", "name")] %>%
+  class_roll[., c("group", "id", "user_name")] %>%
 #  class_roll[., c("group", "id")] %>%
-  subset(.$group == "Black", select = c("id", "name")) %>%
+  subset(.$group == "Black", select = c("id", "user_name")) %>%
 #  subset(.$group == "Black", select = c("id")) %>%
   pander(caption = "Black", row.names = FALSE)
 ```
